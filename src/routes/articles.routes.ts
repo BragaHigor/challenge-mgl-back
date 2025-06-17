@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
    getAllArticles,
    getArticleById,
-} from "../controllers/article.controle";
+} from "../controllers/article.controller";
 
 const router = Router();
 router.get("/", getAllArticles);
