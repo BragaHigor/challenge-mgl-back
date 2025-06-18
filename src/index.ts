@@ -4,6 +4,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import articleRoutes from "./routes/articles.routes";
 
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./docs/swagger";
+
 dotenv.config();
 
 const app = express();
@@ -15,6 +18,9 @@ app.use(
    })
 );
 app.use(express.json());
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.use("/articles", articleRoutes);
 
 app.get("/", (_req, res) => {
