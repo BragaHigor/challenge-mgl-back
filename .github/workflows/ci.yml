@@ -4,31 +4,33 @@ on:
   push:
     branches:
       - main
-      - ci-test
   pull_request:
     branches:
       - main
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build-and-test:
-    runs-on: windows-latest
-    env:
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
-      PORT: ${{ secrets.PORT }}
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Configurar Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: '20.18.0'
-          cache: 'npm'
+          node-version: "20.18.0"
+          cache: npm
 
-      - name: Install dependencies
+      - name: Instalar dependências
         run: npm ci
 
-      - name: Run build
+      - name: Criar build
         run: npm run build
-
