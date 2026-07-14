@@ -49,8 +49,9 @@ const ArticleSchema = new Schema<Article>(
       versionKey: false,
       toJSON: {
          virtuals: true,
-         transform(doc, ret) {
-            delete ret._id;
+         transform(_doc, ret) {
+            const { _id, ...article } = ret;
+            return article;
          },
       },
    }
